@@ -7,11 +7,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
-from loss.mvrloss import MVR
+from loss.mvrloss import MVR_Triplet
 import numpy as np
 from tqdm import tqdm
-
-
+from loss.mvrloss import MVR_Proxy
+from evaluation.recall import give_recall
+torch.autograd.set_detect_anomaly(True)
 def l2_norm(input):
     input_size = input.size()
     buffer = torch.pow(input, 2)
@@ -21,73 +22,6 @@ def l2_norm(input):
     output = _output.view(input_size)
 
     return output
-
-
-def evaluate_cos(model, dataloader):
-    # nb_classes = dataloader.dataset.nb_classes()
-
-    # calculate embeddings with model and get targets
-    X, T = predict_batchwise(model, dataloader)
-    X = l2_norm(X)
-
-    # get predictions by assigning nearest 8 neighbors with cosine
-    K = 32
-    Y = []
-    xs = []
-
-    cos_sim = F.linear(X, X)
-    Y = T[cos_sim.topk(1 + K)[1][:, 1:]]
-    Y = Y.float().cpu()
-
-    recall = []
-    for k in [1, 2, 4, 8, 16, 32]:
-        r_at_k = calc_recall_at_k(T, Y, k)
-        recall.append(r_at_k)
-        print("R@{} : {:.3f}".format(k, 100 * r_at_k))
-
-    return recall
-
-
-def calc_recall_at_k(T, Y, k):
-    """
-    T : [nb_samples] (target labels)
-    Y : [nb_samples x k] (k predicted labels/neighbours)
-    """
-
-    s = 0
-    for t,y in zip(T,Y):
-        if t in torch.Tensor(y).long()[:k]:
-            s += 1
-    return s / (1. * len(T))
-
-
-
-def predict_batchwise(model, dataloader):
-    device = "cuda"
-    model_is_training = model.training
-    model.eval()
-
-    ds = dataloader.dataset
-    A = [[] for i in range(len(ds[0]))]
-    with torch.no_grad():
-        # extract batches (A becomes list of samples)
-        for batch in tqdm(dataloader):
-            for i, J in enumerate(batch):
-                # i = 0: sz_batch * images
-                # i = 1: sz_batch * labels
-                # i = 2: sz_batch * indices
-                if i == 0:
-                    # move images to device of model (approximate device)
-                    J = model(J.cuda())
-
-                for j in J:
-                    A[i].append(j)
-    model.train()
-    model.train(model_is_training)  # revert to previous training state
-
-    return [torch.stack(A[i]) for i in range(len(A))]
-
-
 
 ### MNIST code originally from https://github.com/pytorch/examples/blob/master/mnist/main.py ###
 class Net(nn.Module):
@@ -108,6 +42,7 @@ class Net(nn.Module):
         x = self.dropout1(x)
         x = torch.flatten(x, 1)
         x = self.fc1(x)
+        x = l2_norm(x)
         return x
 
 ### MNIST code originally from https://github.com/pytorch/examples/blob/master/mnist/main.py ###
@@ -130,10 +65,10 @@ def get_all_embeddings(dataset, model):
 
 ### compute accuracy using AccuracyCalculator from pytorch-metric-learning ###
 def test(model, test_loader):
-    Recalls = evaluate_cos(model,test_loader)
-    print(Recalls[0])
+    Recalls = give_recall(model, test_loader)
+    print("Recall @1 : {}, Recall @2 : {}, Recall @4 : {}, Recall @8 : {}".format(Recalls[0], Recalls[1], Recalls[2], Recalls[3]))
 
-device = torch.device("cuda")
+device = torch.device("cuda:1")
 
 transform = transforms.Compose([
         transforms.ToTensor(),
@@ -143,19 +78,20 @@ transform = transforms.Compose([
 batch_size = 256
 
 dataset1 = datasets.MNIST('.', train=True, download=True, transform=transform)
-dataset2 = datasets.MNIST('.', train=False, transform=transform)
-train_loader = torch.utils.data.DataLoader(dataset1, batch_size=128, shuffle=True)
-test_loader = torch.utils.data.DataLoader(dataset2, batch_size=128)
+dataset2 = datasets.MNIST('.', train=False, download=True, transform=transform)
+train_loader = torch.utils.data.DataLoader(dataset1, batch_size=240, shuffle=True)
+test_loader = torch.utils.data.DataLoader(dataset2, batch_size=240)
 
 model = Net().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
-num_epochs = 1
+num_epochs = 5
 
 
 ### pytorch-metric-learning stuff ###
 distance = distances.CosineSimilarity()
-reducer = reducers.ThresholdReducer(low = 0)
-loss_func = MVR(margin = 0.2, reg=0.15)
+reducer = reducers.MeanReducer()
+loss_func = MVR_Proxy(0.20, 10, 128)
+loss_func.cuda('cuda:1')
 accuracy_calculator = AccuracyCalculator(include = ("precision_at_1",), k = 1)
 ### pytorch-metric-learning stuff ###
 
