@@ -68,7 +68,7 @@ def test(model, test_loader):
     Recalls = give_recall(model, test_loader)
     print("Recall @1 : {}, Recall @2 : {}, Recall @4 : {}, Recall @8 : {}".format(Recalls[0], Recalls[1], Recalls[2], Recalls[3]))
 
-device = torch.device("cuda:1")
+device = torch.device("cuda:0")
 
 transform = transforms.Compose([
         transforms.ToTensor(),
@@ -91,7 +91,7 @@ num_epochs = 5
 distance = distances.CosineSimilarity()
 reducer = reducers.MeanReducer()
 loss_func = MVR_Proxy(0.20, 10, 128)
-loss_func.cuda('cuda:1')
+loss_func.cuda('cuda:0')
 accuracy_calculator = AccuracyCalculator(include = ("precision_at_1",), k = 1)
 ### pytorch-metric-learning stuff ###
 

@@ -24,7 +24,7 @@ logging.basicConfig(
     ]
 )
 
-cuda = 'cuda:1'
+cuda = 'cuda:0'
 root_dir = "./dataloader/data/CUB_200_2011/images"
 transforms_test = trsfrm.Compose([must_transform(), trsfrm.Resize(256), trsfrm.CenterCrop(224)])
 cub_test = CUB(root_dir, 'test', transforms_test)
