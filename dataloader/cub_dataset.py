@@ -5,7 +5,7 @@ from torchvision import transforms as trs
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
-import cv2
+#import cv2
 class CUB(Dataset):
     def __init__(self, root, mode='train', transform=None):
         super(CUB, self).__init__()

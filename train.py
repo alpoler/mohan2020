@@ -66,7 +66,7 @@ logging.info(
 transforms_tr = trsfrm.Compose([must_transform(), trsfrm.RandomResizedCrop(224), trsfrm.RandomHorizontalFlip()])
 transforms_test = trsfrm.Compose([must_transform(), trsfrm.Resize(256), trsfrm.CenterCrop(224)])
 # Dataset
-root_dir = "dataloader/data/CUB_200_2011/images"
+root_dir = "data/CUB_200_2011/images"
 cub_train = CUB(root_dir, 'trainval', transforms_tr)
 cub_val = CUB(root_dir, 'test', transforms_test)
 

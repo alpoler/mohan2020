@@ -65,7 +65,7 @@ def get_all_embeddings(dataset, model):
 
 ### compute accuracy using AccuracyCalculator from pytorch-metric-learning ###
 def test(model, test_loader):
-    Recalls = give_recall(model, test_loader)
+    Recalls = give_recall(model, test_loader, cuda=device)
     print("Recall @1 : {}, Recall @2 : {}, Recall @4 : {}, Recall @8 : {}".format(Recalls[0], Recalls[1], Recalls[2], Recalls[3]))
 
 device = torch.device("cuda:0")
@@ -75,12 +75,12 @@ transform = transforms.Compose([
         transforms.Normalize((0.1307,), (0.3081,))
     ])
 
-batch_size = 256
+batch_size = 64
 
 dataset1 = datasets.MNIST('.', train=True, download=True, transform=transform)
 dataset2 = datasets.MNIST('.', train=False, download=True, transform=transform)
-train_loader = torch.utils.data.DataLoader(dataset1, batch_size=240, shuffle=True)
-test_loader = torch.utils.data.DataLoader(dataset2, batch_size=240)
+train_loader = torch.utils.data.DataLoader(dataset1, batch_size=batch_size, shuffle=True)
+test_loader = torch.utils.data.DataLoader(dataset2, batch_size=batch_size)
 
 model = Net().to(device)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
