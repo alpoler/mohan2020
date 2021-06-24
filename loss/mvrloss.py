@@ -59,7 +59,7 @@ class MVR_Proxy(nn.Module):
     def forward(self, embeddings, labels):
         anchor_embeddings = embeddings
         anchor_pr_dist = torch.cdist(anchor_embeddings, self.proxies)
-        labels = labels.type(torch.long65)
+        labels = labels.type(torch.long)
         ## Computation of euclidean distance term in not only nominator but also denominator
         euc_pproxy_anchor = anchor_pr_dist[range(len(labels)), labels]
         mask_euc = torch.ones(anchor_pr_dist.shape, dtype=torch.bool)

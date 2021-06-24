@@ -1,11 +1,13 @@
 import torchvision.transforms as trsfrm
 from dataloader.cub_dataset import CUB
 from dataloader.trsfrms import must_transform
+from dataloader import sampler
 from evaluation.recall import give_recall
 from loss.mvrloss import MVR_Proxy, MVR_Triplet
 from model.bn_inception import bn_inception
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch.utils.data.sampler import BatchSampler
 import torch
 import numpy as np
 import random
@@ -14,14 +16,15 @@ from tqdm import tqdm
 import argparse
 import logging
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MVR'
                                      )
     parser.add_argument('--gpu_id', default=0, type=int,
                         help='ID of GPU that is used for training.'
                         )
-    parser.add_argument("--tnsrbrd_dir", default="./runs/a", type=str)
-    parser.add_argument("--model_save_dir", default="./MVR_Proxy/exp", type=str)
+    parser.add_argument("--tnsrbrd_dir", default="./runs/triplet_02_0.0961_0.3", type=str)
+    parser.add_argument("--model_save_dir", default="./MVR_Triplet/exp", type=str)
     parser.add_argument("--batch_size", default=64, type=int)
     parser.add_argument("--lr", default=1e-5, type=float)
     parser.add_argument("--wdecay", default=5e-3, type=float)
@@ -30,6 +33,9 @@ if __name__ == '__main__':
     parser.add_argument("--emb_dim", default=64, type=int)
     parser.add_argument("--exp_name", default="exp", type=str)
     parser.add_argument("--patience", default=15, type=int)
+    parser.add_argument("--balanced_sampler_train", default=True, type=bool)
+    parser.add_argument("--balanced_sampler_validation", default=False, type=bool)
+
     args = parser.parse_args()
 
     # seeds
@@ -78,17 +84,37 @@ if __name__ == '__main__':
     net.to(cuda)
 
     # DataLoader
-    # TODO: SAMPLER IMPLEMENTATION
+    numWorkers = 4
     batch_size = args.batch_size
-    tr_dataloader = DataLoader(cub_train, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-    val_dataloader = DataLoader(cub_val, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-
-
-
+    # SAMPLER IMPLEMENTATION
+    if args.balanced_sampler_train:
+        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=8)
+        tr_batch_sampler = BatchSampler(tr_balanced_sampler, batch_size=batch_size, drop_last=True)
+        tr_dataloader = torch.utils.data.DataLoader(
+            cub_train,
+            num_workers=numWorkers,
+            pin_memory=True,
+            batch_sampler=tr_batch_sampler
+        )
+    else:
+        tr_dataloader = DataLoader(cub_train, batch_size=batch_size, shuffle=True, num_workers=numWorkers, pin_memory=True)
+    if args.balanced_sampler_validation:
+        val_balanced_sampler = sampler.BalancedSampler(cub_val, batch_size=batch_size, images_per_class = 8)
+        val_batch_sampler = BatchSampler(val_balanced_sampler, batch_size = batch_size, drop_last = True)
+        val_dataloader = torch.utils.data.DataLoader(
+            cub_val,
+            num_workers = numWorkers,
+            pin_memory = True,
+            batch_sampler = val_batch_sampler
+        )
+    else:
+        val_dataloader = DataLoader(cub_val, batch_size=batch_size, shuffle=False, num_workers=numWorkers,
+                                    pin_memory=True)
     # Loss
     no_tr_class = max(cub_train.target) + 1
     emb_dim = args.emb_dim
-    loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
+    #loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
+    loss_func = MVR_Triplet(0.0961, 0.3)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},
