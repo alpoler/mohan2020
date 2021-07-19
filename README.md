@@ -31,21 +31,26 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 ## Tuned Parameter
 
 
-Optuna framework is utilized to tune hyper-parameter of the method. \
-Triplet Hyper-Parameter \
-Margin : 0.2781877469005122 \
+Optuna framework is utilized to tune hyper-parameter of the method. 
+```
+Triplet Hyper-Parameter 
+Margin : 0.2781877469005122 
 Reg. Constant: 0.4919607680052035 
+```
 
-Proxy Hyper-Parameter 
+```
+Proxy Hyper-Parameter
 
-Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.\
-Patience: 25 \
-Batch size: 128 \
-Emb. Dim: 64 \
-Optimizer: Adam \
-Learning Rate: 1e-5 \
+```
+Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.
+```
+Patience: 25 
+Batch size: 128 
+Emb. Dim: 64 
+Optimizer: Adam 
+Learning Rate: 1e-5 
 Weight Decay: 5e-3
-
+```
 
 ## ToDo List
 ### Alper
