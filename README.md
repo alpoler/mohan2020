@@ -40,10 +40,11 @@ Proxy Hyper-Parameter
 
 Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.\
 Patience: 25 \
-Batch size: 128 \ 
+Batch size: 128 \
 Emb. Dim: 64 \
-Optimizer Adam \ 
-Learning Rate: 1e-5 \ 
+Optimizer: Adam \
+Learning Rate: 1e-5 \
+Weight Decay: 5e-3
 
 
 ## ToDo List
