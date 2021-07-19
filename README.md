@@ -25,7 +25,7 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
-| DR-ProxyNCA | | | | |
+| DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
 
 ## Tuned Parameter
