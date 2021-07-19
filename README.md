@@ -11,6 +11,7 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 * [Quantitative Results](#quantitative-results)
 * [ToDo List](#todo-list)
 * [instructions](#instructions)
+* [Contact](#contact)
 
 
 # Advantages of Regularization
@@ -91,4 +92,4 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 ```
 
 ## Contact
-Feel free to ask me any question. Email address: alper.kayabasi@metu.edu.tr
+Feel free to ask me any question. Email address: alper.kayabasi@metu.edu.tr, [Linkedin](https://www.linkedin.com/in/kayabasialper/)
