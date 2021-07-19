@@ -69,7 +69,7 @@ Optimizer: Adam
 
 ## Instructions
 1. Download dataset and put into folder named 'data'.
-
+2.
 DR-TRIPLET:
 ```
 python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
