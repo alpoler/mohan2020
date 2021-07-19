@@ -73,5 +73,5 @@ python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --ma
 ```
 DR-PROXY:
 ```
-python train.py --batch_size 128 --patience 25 --mvr_reg --margin --loss mvr_proxy 
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy 
 ```
