@@ -17,25 +17,31 @@ import argparse
 import logging
 
 
+## Triplet margin : 0.3478912374083307 - exp1
+## Triplet reg : 0.5061600574032541 - exp1
+## Triplet margin : 0.2781877469005122 - exp2
+## Triplet reg : 0.4919607680052035 - exp2
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='MVR'
                                      )
     parser.add_argument('--gpu_id', default=0, type=int,
                         help='ID of GPU that is used for training.'
                         )
-    parser.add_argument("--tnsrbrd_dir", default="./runs/triplet_02_0.0961_0.3", type=str)
+    parser.add_argument("--tnsrbrd_dir", default="./runs", type=str)
     parser.add_argument("--model_save_dir", default="./MVR_Triplet/exp", type=str)
-    parser.add_argument("--batch_size", default=64, type=int)
+    parser.add_argument("--batch_size", default=128, type=int)
     parser.add_argument("--lr", default=1e-5, type=float)
     parser.add_argument("--wdecay", default=5e-3, type=float)
     parser.add_argument("--mvr_reg", default=0.3, type=float)
     parser.add_argument("--bn_freeze", default=False, type=bool)
     parser.add_argument("--emb_dim", default=64, type=int)
     parser.add_argument("--exp_name", default="exp", type=str)
-    parser.add_argument("--patience", default=15, type=int)
+    parser.add_argument("--patience", default=25, type=int)
     parser.add_argument("--balanced_sampler_train", default=True, type=bool)
     parser.add_argument("--balanced_sampler_validation", default=False, type=bool)
-
+    parser.add_argument("--loss", default="proxy",type=str)
+    parser.add_argument("--margin", default=0.28)
     args = parser.parse_args()
 
     # seeds
@@ -88,7 +94,7 @@ if __name__ == '__main__':
     batch_size = args.batch_size
     # SAMPLER IMPLEMENTATION
     if args.balanced_sampler_train:
-        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=8)
+        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=16)
         tr_batch_sampler = BatchSampler(tr_balanced_sampler, batch_size=batch_size, drop_last=True)
         tr_dataloader = torch.utils.data.DataLoader(
             cub_train,
@@ -113,8 +119,11 @@ if __name__ == '__main__':
     # Loss
     no_tr_class = max(cub_train.target) + 1
     emb_dim = args.emb_dim
-    #loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
-    loss_func = MVR_Triplet(0.0961, 0.3)
+
+    if args.loss == "triplet":
+        loss_func = MVR_Triplet(margin=args.margin, reg=args.mvr_reg)
+    elif args.loss == "proxy":
+        loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},

@@ -4,7 +4,7 @@ from tqdm import tqdm
 import random
 import matplotlib.pyplot as plt
 from dataloader.trsfrms import unnormalize
-
+import cv2
 # 1. EXTRACT EMBEDDINGS
 # 2. CALCULATE RECALL
 
@@ -52,12 +52,14 @@ def give_recall(model, data_loader, cuda = None, visualize = False, dataset = No
             for question_no, questioned in enumerate(cur_indicies):
                 if all_labels[random_query_idx[query_no]] == all_labels[questioned]:
                     unbordered_img = unnormalize(dataset[questioned][0])
+                    bordered_img = cv2.copyMakeBorder(unbordered_img,10,10,10,10,cv2.BORDER_CONSTANT, value=[0, 255,0])
                     plt.subplot(5, 6, 6*query_no + (question_no + 2))
-                    plt.imshow(unbordered_img)
+                    plt.imshow(bordered_img)
                 else:
                     unbordered_img = unnormalize(dataset[questioned][0])
+                    bordered_img = cv2.copyMakeBorder(unbordered_img, 10, 10, 10, 10, cv2.BORDER_CONSTANT,value=[255, 0, 0])
                     plt.subplot(5, 6, 6*query_no + (question_no+2))
-                    plt.imshow(unbordered_img)
+                    plt.imshow(bordered_img)
         plt.show()
 
     return Recalls
