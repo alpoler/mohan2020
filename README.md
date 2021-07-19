@@ -62,6 +62,7 @@ Optimizer: Adam
 - [x] Data Transformations
 - [x] Hyper parameter tuning for triplet and proxy
 - [x] Main codes for train and test
+- [x] Model Definition 
 
 ### Baran
 
