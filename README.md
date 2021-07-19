@@ -90,3 +90,5 @@ DR-PROXYNCA:
 python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 ```
 
+## Contact
+Feel free to ask me any question. Email address: alper.kayabasi@metu.edu.tr
