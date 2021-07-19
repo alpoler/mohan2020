@@ -72,14 +72,21 @@ Optimizer: Adam
 
 DR-TRIPLET:
 ```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp 
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
 ```
-DR-PROXY:
+DR-PROXYNCA:
 ```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp 
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
+
+DR-Triplet:
 ```
+python test.py --exp_name mvr_triplet --model_save_dir ./MVR_Triplet/exp
+```
+DR-PROXYNCA:
+```
+python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 ```
 
