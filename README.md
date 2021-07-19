@@ -66,4 +66,9 @@ Weight Decay: 5e-3
 ### Baran
 
 
-## Training instructions
+## Instructions
+```
+Training:
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet
+python train.py --batch_size 128 --patience 25 --mvr_reg --margin --loss mvr_proxy 
+```
