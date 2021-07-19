@@ -22,13 +22,29 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 ## Quantitative Results
 | Recall | 1 | 2 | 4 | 8 |
 |--------|---|---|---|---|
-| Triplet|   |   |   |   | 
-| DR-Triplet|  |  |  |   |
-| Proxy | | | | |
+| Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
+| DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
+| ProxyNCA | | | | |
 | DR-Proxy | | | | |
 
+
 ## Tuned Parameter
-Optuna framework is utilized to tune hyper-parameter of the method.
+
+
+Optuna framework is utilized to tune hyper-parameter of the method. \
+Triplet Hyper-Parameter \
+Margin : 0.2781877469005122 \
+Reg. Constant: 0.4919607680052035 
+
+Proxy Hyper-Parameter 
+
+Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.\
+Patience: 25 \
+Batch size: 128 \ 
+Emb. Dim: 64 \
+Optimizer Adam \ 
+Learning Rate: 1e-5 \ 
+
 
 ## ToDo List
 ### Alper
