@@ -20,6 +20,9 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 
 ## Qualitative Results
 
+![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)
+
+
 ## Quantitative Results
 | Recall | 1 | 2 | 4 | 8 |
 |--------|---|---|---|---|
