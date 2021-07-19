@@ -10,7 +10,7 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 * [Qualitative Results](#qualitative-results)
 * [Quantitative Results](#quantitative-results)
 * [ToDo List](#todo-list)
-* [Training instructions](#training-instructions)
+* [instructions](#instructions)
 
 
 # Advantages of Regularization
@@ -32,15 +32,13 @@ Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Moha
 
 
 Optuna framework is utilized to tune hyper-parameter of the method. 
-```
 Triplet Hyper-Parameter 
+```
 Margin : 0.2781877469005122 
 Reg. Constant: 0.4919607680052035 
 ```
-
-```
 Proxy Hyper-Parameter
-
+```
 ```
 Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.
 ```
@@ -67,8 +65,11 @@ Weight Decay: 5e-3
 
 
 ## Instructions
+DR-TRIPLET:
 ```
-Training:
 python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet
+```
+DR-PROXY:
+```
 python train.py --batch_size 128 --patience 25 --mvr_reg --margin --loss mvr_proxy 
 ```
