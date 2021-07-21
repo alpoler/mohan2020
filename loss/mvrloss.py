@@ -195,17 +195,17 @@ class MVR_MS_reg(nn.Module):
             # -- f_p: map the index to previous binary masks
             pos_hardest_bool = torch.zeros(pos_pair.shape, dtype=torch.bool) #, device = torch.device('cuda'))
             pos_hardest_bool[torch.argmin(pos_pair)] = True
-            pos_hardest_bool1 = mapMaskBinary(pos_hardest_bool, pos_pair_margin_bool)
-            pos_hardest_bool2 = mapMaskBinary(pos_hardest_bool1, pos_pair_epsilon_bool)
-            pos_hardest_bool3 = mapMaskBinary(pos_hardest_bool2, pos_pair_labels_bool)
-            f_p_vec = embeddings[pos_hardest_bool3,].flatten(0)
+            pos_hardest_idx1 = pos_pair_margin_bool.nonzero()[pos_hardest_bool.nonzero()].flatten()
+            pos_hardest_idx2 = pos_pair_epsilon_bool.nonzero()[pos_hardest_idx1].flatten()
+            pos_hardest_idx3 = pos_pair_labels_bool.nonzero()[pos_hardest_idx2].flatten()
+            f_p_vec = embeddings[pos_hardest_idx3,].flatten(0)
             f_p = f_p_vec.expand(neg_pair.shape[0], -1)
             # -- f_a
             f_a_vec = embeddings[i,]
             f_a = f_a_vec.expand(neg_pair.shape[0], -1)
             # -- f_n
-            f_n_bool = mapMaskBinary(neg_pair_margin_bool, neg_pair_labels_bool)
-            f_n = embeddings[f_n_bool,]
+            f_n_idx = neg_pair_labels_bool.nonzero()[neg_pair_margin_bool.nonzero()].flatten()
+            f_n = embeddings[f_n_idx,]
             # --
             reg = self.gamma*nn.CosineSimilarity(dim=1)(f_n-f_a, f_p-f_a)
             # weighting step
