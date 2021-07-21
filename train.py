@@ -3,7 +3,7 @@ from dataloader.cub_dataset import CUB
 from dataloader.trsfrms import must_transform
 from dataloader import sampler
 from evaluation.recall import give_recall
-from loss.mvrloss import MVR_Proxy, MVR_Triplet
+from loss.mvrloss import MVR_Proxy, MVR_Triplet, MVR_MS, MVR_MS_reg
 from model.bn_inception import bn_inception
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
@@ -30,7 +30,7 @@ if __name__ == '__main__':
                         )
     parser.add_argument("--tnsrbrd_dir", default="./runs", type=str)
     parser.add_argument("--model_save_dir", default="./MVR_Triplet/exp", type=str)
-    parser.add_argument("--batch_size", default=128, type=int)
+    parser.add_argument("--batch_size", default=32, type=int)
     parser.add_argument("--lr", default=1e-5, type=float)
     parser.add_argument("--wdecay", default=5e-3, type=float)
     parser.add_argument("--mvr_reg", default=0.3, type=float)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     parser.add_argument("--patience", default=25, type=int)
     parser.add_argument("--balanced_sampler_train", default=True, type=bool)
     parser.add_argument("--balanced_sampler_validation", default=False, type=bool)
-    parser.add_argument("--loss", default="proxy",type=str)
+    parser.add_argument("--loss", default="ms_reg",type=str)
     parser.add_argument("--margin", default=0.28)
     args = parser.parse_args()
 
@@ -124,6 +124,10 @@ if __name__ == '__main__':
         loss_func = MVR_Triplet(margin=args.margin, reg=args.mvr_reg)
     elif args.loss == "proxy":
         loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
+    elif args.loss == "ms":
+        loss_func = MVR_MS(2.0, 40.0, 0.5, 0.1)
+    elif args.loss == "ms_reg":
+        loss_func = MVR_MS_reg(2.0, 40.0, 0.5, 0.1, 0.3)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},

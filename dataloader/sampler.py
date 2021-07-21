@@ -26,8 +26,6 @@ class BalancedSampler(Sampler):
             sampled_classes += min(self.target)
             for i in range(len(sampled_classes)):
                 ith_class_idxs = np.nonzero(np.array(self.target) == sampled_classes[i])[0]
-                if ith_class_idxs.size == 0:
-                    print("here comes the empty")
                 class_sel = np.random.choice(ith_class_idxs, size=self.num_instances, replace=True)
                 ret.extend(np.random.permutation(class_sel))
             num_batches -= 1

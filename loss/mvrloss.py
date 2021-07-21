@@ -92,6 +92,135 @@ class MVR_Proxy(nn.Module):
         return log_loss.mean()
 
 
+class MVR_MS(nn.Module):
+    # credits to Malong Technologies
+    def __init__(self, scale_pos=2.0, scale_neg=40.0, thresh=0.5, margin=0.1):
+        super(MVR_MS, self).__init__()
+        self.thresh = thresh
+        self.margin = margin
+
+        self.scale_pos = scale_pos
+        self.scale_neg = scale_neg
+
+    def forward(self, embeddings, labels):
+        assert embeddings.size(0) == labels.size(0), \
+            f"embeddings.size(0): {embeddings.size(0)} is not equal to labels.size(0): {labels.size(0)}"
+        batch_size = embeddings.size(0)
+        sim_mat = torch.matmul(embeddings, torch.t(embeddings))
+    
+        epsilon = 1e-5
+        ms_loss = list()
+
+        for i in range(batch_size):
+            pos_pair_ = sim_mat[i][labels == labels[i]]
+            pos_pair_ = pos_pair_[pos_pair_ < 1 - epsilon]
+            neg_pair_ = sim_mat[i][labels != labels[i]]
+
+            neg_pair = neg_pair_[neg_pair_ + self.margin > min(pos_pair_)]
+            pos_pair = pos_pair_[pos_pair_ - self.margin < max(neg_pair_)]
+
+            if len(neg_pair) < 1 or len(pos_pair) < 1:
+                continue
+
+            # regularization part
+
+            # weighting step
+            pos_loss = 1.0 / self.scale_pos * torch.log(
+                1 + torch.sum(torch.exp(-self.scale_pos * (pos_pair - self.thresh))))
+            neg_loss = 1.0 / self.scale_neg * torch.log(
+                1 + torch.sum(torch.exp(self.scale_neg * (neg_pair - self.thresh))))
+            ms_loss.append(pos_loss + neg_loss)
+
+        if len(ms_loss) == 0:
+            return torch.zeros([], requires_grad=True)
+
+        ms_loss = sum(ms_loss) / batch_size
+        return ms_loss
+
+
+def mapMaskBinary(maskSmall, maskBig):
+    # maskSmall is assumed to be created of True's of maskBig
+    if maskSmall.shape == maskBig.shape:
+        maskOut = maskSmall.clone()
+    else:
+        maskOut = maskBig.clone()
+        iS = 0
+        for iB in range(len(maskBig)):
+            if maskBig[iB]:
+                maskOut[iB] = maskBig[iB] and maskSmall[iS]
+                iS += 1
+    return maskOut
+
+
+class MVR_MS_reg(nn.Module):
+    def __init__(self, scale_pos=2.0, scale_neg=40.0, thresh=0.5, margin=0.1, gamma=0.3):
+        super(MVR_MS_reg, self).__init__()
+        self.thresh = thresh
+        self.margin = margin
+
+        self.scale_pos = scale_pos
+        self.scale_neg = scale_neg
+
+        self.gamma = gamma
+        self.cosSim = nn.CosineSimilarity(dim=1)
+
+    def forward(self, embeddings, labels):
+        assert embeddings.size(0) == labels.size(0), \
+            f"embeddings.size(0): {embeddings.size(0)} is not equal to labels.size(0): {labels.size(0)}"
+        batch_size = embeddings.size(0)
+        sim_mat = torch.matmul(embeddings, torch.t(embeddings))
+
+        epsilon = 1e-5
+        ms_loss = list()
+
+        for i in range(batch_size):
+            pos_pair_labels_bool = labels == labels[i]
+            pos_pair_ = sim_mat[i][pos_pair_labels_bool]
+            pos_pair_epsilon_bool = pos_pair_ < 1 - epsilon
+            pos_pair_ = pos_pair_[pos_pair_epsilon_bool]
+            neg_pair_labels_bool = labels != labels[i]
+            neg_pair_ = sim_mat[i][neg_pair_labels_bool]
+
+            neg_pair_margin_bool = neg_pair_ + self.margin > min(pos_pair_) # boolean mask
+            pos_pair_margin_bool = pos_pair_ - self.margin < max(neg_pair_)
+
+            neg_pair = neg_pair_[neg_pair_margin_bool]
+            pos_pair = pos_pair_[pos_pair_margin_bool]
+
+            if len(neg_pair) < 1 or len(pos_pair) < 1:
+                continue
+
+            dummy = 0
+            # regularization
+            # -- f_p: map the index to previous binary masks
+            pos_hardest_bool = torch.zeros(pos_pair.shape, dtype=torch.bool) #, device = torch.device('cuda'))
+            pos_hardest_bool[torch.argmin(pos_pair)] = True
+            pos_hardest_bool1 = mapMaskBinary(pos_hardest_bool, pos_pair_margin_bool)
+            pos_hardest_bool2 = mapMaskBinary(pos_hardest_bool1, pos_pair_epsilon_bool)
+            pos_hardest_bool3 = mapMaskBinary(pos_hardest_bool2, pos_pair_labels_bool)
+            f_p_vec = embeddings[pos_hardest_bool3,].flatten(0)
+            f_p = f_p_vec.expand(neg_pair.shape[0], -1)
+            # -- f_a
+            f_a_vec = embeddings[i,]
+            f_a = f_a_vec.expand(neg_pair.shape[0], -1)
+            # -- f_n
+            f_n_bool = mapMaskBinary(neg_pair_margin_bool, neg_pair_labels_bool)
+            f_n = embeddings[f_n_bool,]
+            # --
+            reg = self.gamma*nn.CosineSimilarity(dim=1)(f_n-f_a, f_p-f_a)
+            # weighting step
+            pos_loss = 1.0 / self.scale_pos * torch.log(
+                1 + torch.sum(torch.exp(-self.scale_pos * (pos_pair - self.thresh))))
+            neg_loss = 1.0 / self.scale_neg * torch.log(
+                1 + torch.sum(torch.exp(self.scale_neg * (neg_pair - self.thresh - reg))))
+            ms_loss.append(pos_loss + neg_loss)
+
+        if len(ms_loss) == 0:
+            return torch.zeros([], requires_grad=True)
+
+        ms_loss = sum(ms_loss) / batch_size
+        return ms_loss
+
 if __name__ == '__main__':
     loss = MVR_Proxy(0.1, 8, 128)
     vec = np.random.randn(32, 128)
