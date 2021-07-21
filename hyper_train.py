@@ -1,6 +1,6 @@
 import optuna
 import torch
-from loss.mvrloss import MVR_Proxy, MVR_Triplet
+from loss.mvrloss import MVR_Proxy, MVR_Triplet, MVR_MS, MVR_MS_reg
 import torchvision.transforms as trsfrm
 from dataloader.trsfrms import must_transform
 from model.bn_inception import bn_inception
@@ -14,6 +14,10 @@ import argparse
 
 
 def objective(trial, device):
+    scale_pos = trial.suggest_float("scale_pos", 1.2, 4.0)
+    scale_neg = trial.suggest_float("scale_neg", 10.0, 80.0)
+    thresh = trial.suggest_float("thresh", 0.30, 0.7)
+    margin = trial.suggest_float("margin", 0.5, 0.15)
     mvr_reg = trial.suggest_float("mvr_reg", 0.30, 0.7)
     # Transforms
     transforms_tr = trsfrm.Compose([must_transform(), trsfrm.RandomResizedCrop(224), trsfrm.RandomHorizontalFlip()])
@@ -30,7 +34,7 @@ def objective(trial, device):
 
     # DataLoader
     numWorkers = 2
-    batch_size = 144
+    batch_size = 64
     # SAMPLER IMPLEMENTATION
 
     # tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=16)
@@ -48,8 +52,7 @@ def objective(trial, device):
     # Loss
     no_tr_class = max(cub_train.target) + 1
     emb_dim = 64
-    # loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
-    loss_func = MVR_Proxy(mvr_reg,no_class=no_tr_class,embedding_dimension=emb_dim)
+    loss_func = MVR_MS_reg(scale_pos, scale_neg, thresh, margin, mvr_reg)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},
@@ -87,7 +90,7 @@ if __name__ == '__main__':
                         help='ID of GPU that is used for training.'
                         )
     args = parser.parse_args()
-    study = optuna.create_study(study_name="proxy-mvr", storage="sqlite:///proxy-mvr.db", direction="maximize",
+    study = optuna.create_study(study_name="ms-mvr", storage="sqlite:///ms-mvr.db", direction="maximize",
                                 pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10,
                                                                    interval_steps=1), load_if_exists=True)
     study.optimize(lambda trial: objective(trial, args.gpu_id), n_trials=200)

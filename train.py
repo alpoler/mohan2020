@@ -29,8 +29,8 @@ if __name__ == '__main__':
                         help='ID of GPU that is used for training.'
                         )
     parser.add_argument("--tnsrbrd_dir", default="./runs", type=str)
-    parser.add_argument("--model_save_dir", default="./MVR_Triplet/exp", type=str)
-    parser.add_argument("--batch_size", default=32, type=int)
+    parser.add_argument("--model_save_dir", default="./MVR_MS/exp", type=str)
+    parser.add_argument("--batch_size", default=64, type=int)
     parser.add_argument("--lr", default=1e-5, type=float)
     parser.add_argument("--wdecay", default=5e-3, type=float)
     parser.add_argument("--mvr_reg", default=0.3, type=float)
