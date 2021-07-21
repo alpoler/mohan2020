@@ -1,98 +1,48 @@
-# Moving in the Right Direction: A Regularization for Deep Metric Learning
+# Paper title
 
+This readme file is an outcome of the [CENG501 (Spring 2021)](http://kovan.ceng.metu.edu.tr/~sinan/DL/) project for reproducing a paper without an implementation. See [CENG501 (Spring 2021) Project List](https://github.com/sinankalkan/CENG501-Spring2021) for a complete list of all paper reproduction projects.
 
-This repository is implementation of CVPR paper written by Deen Dayal Mohan et al. 
-Refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Mohan_Moving_in_the_Right_Direction_A_Regularization_for_Deep_Metric_CVPR_2020_paper.pdf) for detailed explanation. 
+# 1. Introduction
 
+Introduce the paper (inc. where it is published) and describe your goal (reproducibility).
 
-# Table of Contents
-* [Advantages of Regularization](#advantages-of-regularization)
-* [Qualitative Results](#qualitative-results)
-* [Quantitative Results](#quantitative-results)
-* [ToDo List](#todo-list)
-* [instructions](#instructions)
-* [Contact](#contact)
+## 1.1. Paper summary
 
+Summarize the paper, the method & its contributions in relation with the existing literature.
 
-# Advantages of Regularization
-1. In vanilla triplet loss, negative sample is pushed away from only anchor example so vanilla triplet do not exploit from positive examples in batch. The regularization constraints movement of the negative sample through direction that is perpendicular to line segment between anchor and positive.
-2. Regularization provides inherent mining mechanism to prevent negative samples ,that are near both positive and anchor, for being used in parameter update.
+# 2. The method and my interpretation
 
-## Qualitative Results
+## 2.1. The original method
 
-![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)
+Explain the original method.
 
+## 2.2. My interpretation 
 
-## Quantitative Results
-| Recall | 1 | 2 | 4 | 8 |
-|--------|---|---|---|---|
-| Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
-| DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
-| ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
-| DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
+Explain the parts that were not clearly explained in the original paper and how you interpreted them.
 
+# 3. Experiments and results
 
-## Tuned Parameter
+## 3.1. Experimental setup
 
+Describe the setup of the original paper and whether you changed any settings.
 
-Optuna framework is utilized to tune hyper-parameter of the method. 
-Triplet Hyper-Parameter 
-```
-Margin : 0.2781877469005122 
-Reg. Constant: 0.4919607680052035
-Learning Rate: 1e-5
-Patience: 25
-Batch size: 128 
-```
-Proxy Hyper-Parameter
-```
-Batch size: 196
-Learning Rate: 1e-4
-Patience: 20
-```
-Model is trained with hyper-parameter corresponding to the specified loss together with fixed hyper-parameter mentioned below for reproducibility.
-```
-Emb. Dim: 64 
-Optimizer: Adam 
-```
+## 3.2. Running the code
 
-## ToDo List
-### Alper
-- [x] Triplet Loss with Regularizer
-- [x] Proxy Loss with Regularizer
-- [x] Implementation of Recall Metric
-- [x] Visualization for Qualitative Results
-- [x] CUB-Dataset 
-- [x] Data Transformations
-- [x] Hyper parameter tuning for triplet and proxy
-- [x] Main codes for train and test
-- [x] Model Definition 
+Explain your code & directory structure and how other people can run it.
 
-### Baran
+## 3.3. Results
 
+Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
-## Instructions
-1. Download dataset and put into folder named 'data'.
-2.
-DR-TRIPLET:
-```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
-```
-DR-PROXYNCA:
-```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
-```
-For visualization
-Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
+# 4. Conclusion
 
-DR-Triplet:
-```
-python test.py --exp_name mvr_triplet --model_save_dir ./MVR_Triplet/exp
-```
-DR-PROXYNCA:
-```
-python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
-```
+Discuss the paper in relation to the results in the paper and your results.
 
-## Contact
-Feel free to ask me any question. Email address: alper.kayabasi@metu.edu.tr, [Linkedin](https://www.linkedin.com/in/kayabasialper/)
+# 5. References
+
+Provide your references here.
+
+# Contact
+
+Alper Kayabasi - alperkayabasi97@gmail.com
+Baran Gulmez - baran.gulmez07@gmail.com
