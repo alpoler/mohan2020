@@ -56,21 +56,6 @@ Emb. Dim: 64
 Optimizer: Adam 
 ```
 
-## ToDo List
-### Alper
-- [x] Triplet Loss with Regularizer
-- [x] Proxy Loss with Regularizer
-- [x] Implementation of Recall Metric
-- [x] Visualization for Qualitative Results
-- [x] CUB-Dataset 
-- [x] Data Transformations
-- [x] Hyper parameter tuning for triplet and proxy
-- [x] Main codes for train and test
-- [x] Model Definition 
-
-### Baran
-
-
 ## Instructions
 1. Download dataset and put into folder named 'data'.
 2.
