@@ -44,4 +44,5 @@ Provide your references here.
 
 # Contact
 
-Provide your names & email addresses and any other info with which people can contact you.
+Alper Kayabasi - alperkayabasi97@gmail.com
+Baran Gulmez - baran.gulmez07@gmail.com
