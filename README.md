@@ -38,7 +38,7 @@ python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --ma
 ```
 DR-PROXYNCA:
 ```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
+python train.py --batch_size 196 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
@@ -55,6 +55,13 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 ## 3.3. Results
 
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
+
+| Recall | 1 | 2 | 4 | 8 |
+|--------|---|---|---|---|
+| Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
+| DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
+| ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
+| DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
 # 4. Conclusion
 
