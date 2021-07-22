@@ -30,6 +30,28 @@ As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on Im
 
 Explain your code & directory structure and how other people can run it.
 
+1. Download dataset and put into folder named 'data'.
+2.
+DR-TRIPLET:
+```
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
+```
+DR-PROXYNCA:
+```
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
+```
+For visualization
+Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
+
+DR-Triplet:
+```
+python test.py --exp_name mvr_triplet --model_save_dir ./MVR_Triplet/exp
+```
+DR-PROXYNCA:
+```
+python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
+```
+
 ## 3.3. Results
 
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
