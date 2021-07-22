@@ -4,7 +4,7 @@ This readme file is an outcome of the [CENG501 (Spring 2021)](http://kovan.ceng.
 
 # 1. Introduction
 
-Introduce the paper (inc. where it is published) and describe your goal (reproducibility).
+This repository is the implementation of the CVPR 2020 paper written by Deen Dayal Mohan et al. Please refer to [the paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Mohan_Moving_in_the_Right_Direction_A_Regularization_for_Deep_Metric_CVPR_2020_paper.pdf) for a detailed explanation. Moving in Right Direction (MVR) paper tries to solve the metric learning problem, which aims to construct embedding space where distance is inversely correlated with semantic similarity. Metric learning has many practical applications such as image retrieval, face verification, person re-identification, few-shot learning, etc.
 
 ## 1.1. Paper summary
 
