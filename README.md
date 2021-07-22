@@ -54,7 +54,7 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 
 ## 3.3. Results
 
-Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.\
+Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
 TABLE 1: Recall Results on CUB-200 Dataset
 | Recall | 1 | 2 | 4 | 8 |
@@ -64,8 +64,8 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
 | DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
-Figure 1: Image Retrieval Results Visualization
-![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)
+
+![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)*Figure 1: Qualitative results of Image retrieval.* 
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
