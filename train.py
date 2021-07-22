@@ -37,7 +37,7 @@ if __name__ == '__main__':
     parser.add_argument("--bn_freeze", default=False, type=bool)
     parser.add_argument("--emb_dim", default=64, type=int)
     parser.add_argument("--exp_name", default="exp", type=str)
-    parser.add_argument("--patience", default=25, type=int)
+    parser.add_argument("--patience", default=20, type=int)
     parser.add_argument("--balanced_sampler_train", default=True, type=bool)
     parser.add_argument("--balanced_sampler_validation", default=False, type=bool)
     parser.add_argument("--loss", default="ms_reg",type=str)

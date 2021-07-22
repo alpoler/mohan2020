@@ -14,8 +14,6 @@ import argparse
 
 
 def objective(trial, device):
-    scale_pos = trial.suggest_float("scale_pos", 1.2, 4.0)
-    scale_neg = trial.suggest_float("scale_neg", 10.0, 80.0)
     thresh = trial.suggest_float("thresh", 0.30, 0.7)
     margin = trial.suggest_float("margin", 0.5, 0.15)
     mvr_reg = trial.suggest_float("mvr_reg", 0.30, 0.7)
@@ -52,7 +50,7 @@ def objective(trial, device):
     # Loss
     no_tr_class = max(cub_train.target) + 1
     emb_dim = 64
-    loss_func = MVR_MS_reg(scale_pos, scale_neg, thresh, margin, mvr_reg)
+    loss_func = MVR_MS_reg(2.0, 40.0, thresh, margin, mvr_reg)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},
