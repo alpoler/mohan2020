@@ -46,6 +46,7 @@ Explain your code & directory structure and how other people can run it.
 ├── data
 |      ├── CUB_200_2011
 |          ├── images
+├── log
 ├── hyper_train.py
 ├── test.py
 ├── train.py
@@ -95,7 +96,7 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
-Retrieval performance of the DR is evaluated with Recall @K. Recall @K computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation.
+Retrieval performance of the DR is evaluated with Recall @K. Recall @K computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation application.
 
 TABLE 1: Recall Results on CUB-200 Dataset
 
@@ -107,6 +108,11 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
 | DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
+
+
+![optuna](https://user-images.githubusercontent.com/50836811/126787205-e0bd09d0-ad2e-49f6-a31c-0daa61ba6d8f.png)
+
+Although optimal result concludes from optuna are 0.3478912374083307 and 0.5061600574032541 for margin and regularization respectively, we can reproduce experiment with second best parameters. Unfortunately, we forget to add seed inside objective. However, results from arbitrary seed gives us idea and really performs as same as original results. As mentioned in ablation part of the MVR paper, our implementation also gives reasonable performance between 0.3 and 0.5.
 
 ![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
 
