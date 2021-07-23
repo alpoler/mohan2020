@@ -28,8 +28,26 @@ As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on Im
 
 ## 3.2. Running the code
 
-Explain your code & directory structure and how other people can run it.
+Explain your code & directory structure and how other people can run it. 
 
+```
+.
+├── dataloader
+│      ├── cub_dataset.py
+│      ├── sampler.py
+│      ├── trsfrms.py
+├── evaluation
+│      ├── recall.py
+├── loss
+|      ├── deneme.py
+|      ├── mvrloss.py
+├── model
+|      ├── bn_inception.py
+├── hyper_train.py
+├── test.py
+├── train.py
+└── README.md
+```
 1. Download dataset and put into folder named 'data'.
 2.
 DR-TRIPLET:
