@@ -112,16 +112,20 @@ TABLE 1: Recall Results on CUB-200 Dataset
 
 ![optuna](https://user-images.githubusercontent.com/50836811/126787205-e0bd09d0-ad2e-49f6-a31c-0daa61ba6d8f.png)
 
-Although optimal result concludes from optuna are 0.3478912374083307 and 0.5061600574032541 for margin and regularization respectively, we can reproduce experiment with second best parameters. Unfortunately, we forget to add seed inside objective. However, results from arbitrary seed gives us idea and really performs as same as original results. As mentioned in ablation part of the MVR paper, our implementation also gives reasonable performance between 0.3 and 0.5.
+<p align="center">
+Figure 1: Slice plot for hyper-parameter optimization of DR-Triplet.
+</p>
+
+Although optimal result concludes from optuna are 0.3478912374083307 and 0.5061600574032541 for margin and regularization respectively, we can reproduce experiment with second best parameters. Unfortunately, we forget to add seed inside objective. However, results from arbitrary seed gives us idea and really performs as same as original results. As mentioned in ablation part of the MVR paper, our implementation also gives reasonable performance between 0.3 and 0.5 as shown in figure 1.
 
 ![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
 
 
 <p align="center">
-Figure 1: Qualitative results of Image retrieval.
+Figure 2: Qualitative results of Image retrieval.
 </p>
 
-In figure 1, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row. Model can distinguish between two similar bird species in terms of appearance as shown in second row, where it miss only one prediction at 4th retrieved result.
+In figure 2, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row. Model can distinguish between two similar bird species in terms of appearance as shown in second row, where it miss only one prediction at 4th retrieved result.
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
