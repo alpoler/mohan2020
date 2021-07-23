@@ -74,6 +74,8 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
+Retrieval performance of the DR is evaluated with Recall @k. Recall @k computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation.
+
 TABLE 1: Recall Results on CUB-200 Dataset
 
 
