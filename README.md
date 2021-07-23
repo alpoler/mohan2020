@@ -85,12 +85,14 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
 
-![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)
+![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
+
 
 <p align="center">
 Figure 1: Qualitative results of Image retrieval.
 </p>
 
+In figure 1, first column represent queried images whil
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
