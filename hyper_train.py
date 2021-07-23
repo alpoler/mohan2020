@@ -15,8 +15,8 @@ import argparse
 
 def objective(trial, device):
     thresh = trial.suggest_float("thresh", 0.30, 0.7)
-    margin = trial.suggest_float("margin", 0.5, 0.15)
-    mvr_reg = trial.suggest_float("mvr_reg", 0.30, 0.7)
+    margin = trial.suggest_float("margin", 0.05, 0.25)
+    mvr_reg = trial.suggest_float("mvr_reg", 0.10, 0.7)
     # Transforms
     transforms_tr = trsfrm.Compose([must_transform(), trsfrm.RandomResizedCrop(224), trsfrm.RandomHorizontalFlip()])
     transforms_test = trsfrm.Compose([must_transform(), trsfrm.Resize(256), trsfrm.CenterCrop(224)])
@@ -35,15 +35,17 @@ def objective(trial, device):
     batch_size = 64
     # SAMPLER IMPLEMENTATION
 
-    # tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=16)
-    # tr_batch_sampler = BatchSampler(tr_balanced_sampler, batch_size=batch_size, drop_last=True)
-    # tr_dataloader = torch.utils.data.DataLoader(
-    #     cub_train,
-    #     num_workers=numWorkers,
-    #     pin_memory=True,
-    #     batch_sampler=tr_batch_sampler
-    # )
-    tr_dataloader = DataLoader(cub_train, batch_size=batch_size, shuffle=True, num_workers=numWorkers, pin_memory=True)
+    if True: # balanced train set
+        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=16)
+        tr_batch_sampler = BatchSampler(tr_balanced_sampler, batch_size=batch_size, drop_last=True)
+        tr_dataloader = torch.utils.data.DataLoader(
+            cub_train,
+            num_workers=numWorkers,
+            pin_memory=True,
+            batch_sampler=tr_batch_sampler
+        )
+    else:
+        tr_dataloader = DataLoader(cub_train, batch_size=batch_size, shuffle=True, num_workers=numWorkers, pin_memory=True)
 
     val_dataloader = DataLoader(cub_val, batch_size=batch_size, shuffle=False, num_workers=numWorkers,
                                 pin_memory=True)
@@ -58,7 +60,7 @@ def objective(trial, device):
     # Initial
     best_recall = 0
 
-    for epochs in range(20):
+    for epochs in range(50):
         avg_loss = 0
         net.train()
         for img, lbl in tqdm(tr_dataloader):
@@ -91,4 +93,4 @@ if __name__ == '__main__':
     study = optuna.create_study(study_name="ms-mvr", storage="sqlite:///ms-mvr.db", direction="maximize",
                                 pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10,
                                                                    interval_steps=1), load_if_exists=True)
-    study.optimize(lambda trial: objective(trial, args.gpu_id), n_trials=200)
+    study.optimize(lambda trial: objective(trial, args.gpu_id), n_trials=80)
