@@ -48,8 +48,23 @@ Explain your code & directory structure and how other people can run it.
 ├── train.py
 └── README.md
 ```
+Dataloader:\
+"cub_dataset.py" splits dataset into 3 set, namely train, trainval, and test. It is responsible of loading images corresponding to choosen set. It takes transformations that is applied to image as parameter.\
+"trsfrms.py" includes common transformation that is caffe type mean substraction belonging to Imagenet.
 
-"cub_dataset.py" splits dataset into 3 set, namely train, trainval, and test. It is responsible of loading images corresponding to choosen set. It takes transformations that is applied to image as parameter. "trsfrms.py" includes caffe type mean substraction belonging to Imagenet. "recall.py" include function that evaluate performance of image retrieval and perform visaulization of retrieval results. "mvrloss.py" includes class of loss of direction regularized triplet, proxynca, and multi-similarity. You can change margin, regularization constant, adn other hyperparameter. "bn_inception.py" includes forward pass for embedding extraction. It takes L2 normalization of embeddings based on chosen parameter. "hyper_train.py" includes wrapper function that defines objective and optimize hyper-parameters with optuna based on this objective. 
+Evaluation:\
+"recall.py" include function that evaluate performance of image retrieval and perform visaulization of retrieval results.
+
+Loss:\
+"mvrloss.py" includes class of loss of direction regularized triplet, proxynca, and multi-similarity. You can change margin, regularization constant, adn other hyperparameter.
+
+Model:\
+"bn_inception.py" includes forward pass for embedding extraction. It takes L2 normalization of embeddings based on chosen parameter.
+
+Main:\
+"hyper_train.py" includes wrapper function that defines objective and optimize hyper-parameters with optuna based on this objective. \
+"train.py" includes full pipeline for training. It also test retrieval performance without visualization. \
+"test.py" tests the trained model again with visualization.
 
 1. Download dataset and put into folder named 'data'.
 2.
