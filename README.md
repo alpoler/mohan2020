@@ -44,7 +44,8 @@ Explain your code & directory structure and how other people can run it.
 ├── model
 |      ├── bn_inception.py
 ├── data
-|
+|      ├── CUB_200_2011
+|          ├── images
 ├── hyper_train.py
 ├── test.py
 ├── train.py
