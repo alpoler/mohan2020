@@ -48,6 +48,9 @@ Explain your code & directory structure and how other people can run it.
 ├── train.py
 └── README.md
 ```
+
+"cub_dataset.py" splits dataset into 3 set, namely train, trainval, and test. It is responsible of loading images corresponding to choosen set. It takes transformations that is applied to image as parameter. "trsfrms.py" includes caffe type mean substraction belonging to Imagenet. "recall.py" include function that evaluate performance of image retrieval and perform visaulization of retrieval results. "mvrloss.py" includes class of loss of direction regularized triplet, proxynca, and multi-similarity. You can change margin, regularization constant, adn other hyperparameter. "bn_inception.py" includes forward pass for embedding extraction. It takes L2 normalization of embeddings based on chosen parameter. "hyper_train.py" includes wrapper function that defines objective and optimize hyper-parameters with optuna based on this objective. 
+
 1. Download dataset and put into folder named 'data'.
 2.
 DR-TRIPLET:
@@ -74,13 +77,13 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
-Retrieval performance of the DR is evaluated with Recall @k. Recall @k computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation.
+Retrieval performance of the DR is evaluated with Recall @K. Recall @K computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation.
 
 TABLE 1: Recall Results on CUB-200 Dataset
 
 
-| Recall | 1 | 2 | 4 | 8 |
-|--------|---|---|---|---|
+| Recall@K | 1 | 2 | 4 | 8 |
+|:----------:|---|---|---|---|
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
