@@ -24,7 +24,7 @@ Explain the parts that were not clearly explained in the original paper and how 
 
 ## 3.1. Experimental setup
 
-As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set.
+As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set. We choose embedding dimension size as 64 like the paper.
 
 ## 3.2. Running the code
 
@@ -75,6 +75,8 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
 TABLE 1: Recall Results on CUB-200 Dataset
+
+
 | Recall | 1 | 2 | 4 | 8 |
 |--------|---|---|---|---|
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
@@ -83,7 +85,12 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
 
 
-![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)*Figure 1: Qualitative results of Image retrieval.* 
+![kuslar3](https://user-images.githubusercontent.com/50836811/126173980-a3d4258d-bf27-4077-b0f3-8206831b0285.png)
+
+<p align="center">
+Figure 1: Qualitative results of Image retrieval.
+</p>
+
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
