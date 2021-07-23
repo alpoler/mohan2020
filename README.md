@@ -24,7 +24,7 @@ Explain the parts that were not clearly explained in the original paper and how 
 
 ## 3.1. Experimental setup
 
-As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set. We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet.
+As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set [[1]](#1). We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet.
 
 ## 3.2. Running the code
 
@@ -132,7 +132,7 @@ Discuss the paper in relation to the results in the paper and your results.
 
 # 5. References
 
-Provide your references here.
+<a id="1">[1]</a> [A Metric Learning Reality Check - Kevin Musgrave et al.](https://arxiv.org/abs/2003.08505)
 
 # Contact
 
