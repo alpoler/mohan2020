@@ -112,7 +112,7 @@ TABLE 1: Recall Results on CUB-200 Dataset
 Figure 1: Qualitative results of Image retrieval.
 </p>
 
-In figure 1, first column represent queried images whil
+In figure 1, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row.
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
