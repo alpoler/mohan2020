@@ -94,7 +94,7 @@ class MVR_Proxy(nn.Module):
 
 class MVR_MS(nn.Module):
     # credits to Malong Technologies
-    def __init__(self, scale_pos=2.0, scale_neg=40.0, thresh=0.5, margin=0.1):
+    def __init__(self, scale_pos=2.0, scale_neg=50.0, thresh=0.5, margin=0.1):
         super(MVR_MS, self).__init__()
         self.thresh = thresh
         self.margin = margin
@@ -153,7 +153,7 @@ def mapMaskBinary(maskSmall, maskBig):
 
 
 class MVR_MS_reg(nn.Module):
-    def __init__(self, scale_pos=2.0, scale_neg=40.0, thresh=0.5, margin=0.1, gamma=0.3):
+    def __init__(self, scale_pos=2.0, scale_neg=50.0, thresh=0.5, margin=0.1, gamma=0.3):
         super(MVR_MS_reg, self).__init__()
         self.thresh = thresh
         self.margin = margin

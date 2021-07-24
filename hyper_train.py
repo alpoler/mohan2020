@@ -15,7 +15,6 @@ import argparse
 
 def objective(trial, device):
     thresh = trial.suggest_float("thresh", 0.30, 0.7)
-    margin = trial.suggest_float("margin", 0.05, 0.25)
     mvr_reg = trial.suggest_float("mvr_reg", 0.10, 0.7)
     # Transforms
     transforms_tr = trsfrm.Compose([must_transform(), trsfrm.RandomResizedCrop(224), trsfrm.RandomHorizontalFlip()])
@@ -52,7 +51,7 @@ def objective(trial, device):
     # Loss
     no_tr_class = max(cub_train.target) + 1
     emb_dim = 64
-    loss_func = MVR_MS_reg(2.0, 40.0, thresh, margin, mvr_reg)
+    loss_func = MVR_MS_reg(2.0, 50.0, thresh, 0.1, mvr_reg)
     loss_func.to(cuda)
     # Optimizer
     optimizer = torch.optim.Adam([{"params": net.parameters()},
@@ -60,7 +59,7 @@ def objective(trial, device):
     # Initial
     best_recall = 0
 
-    for epochs in range(50):
+    for epochs in range(80):
         avg_loss = 0
         net.train()
         for img, lbl in tqdm(tr_dataloader):
@@ -91,6 +90,6 @@ if __name__ == '__main__':
                         )
     args = parser.parse_args()
     study = optuna.create_study(study_name="ms-mvr", storage="sqlite:///ms-mvr.db", direction="maximize",
-                                pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10,
+                                pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=40,
                                                                    interval_steps=1), load_if_exists=True)
     study.optimize(lambda trial: objective(trial, args.gpu_id), n_trials=80)
