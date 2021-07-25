@@ -14,8 +14,6 @@ Summarize the paper, the method & its contributions in relation with the existin
 
 ## 2.1. The original method
 
-Explain 
-
 The idea of metric learning is that samples of same class should be close to each other in the embedding space and samples of different classes should be away from each other. Thus, when a anchor, negative and positive are chosen existing loss methods moves toward the positive and the negative moves away from the anchor. However this may lead lead to undesired situations such as pushing the negative into the positives. This situation is shown in Figure 1. The problem results from the existing losses not taking into account that the negative might be placed in the positives or the positive might be placed in the negatives. 
 
 ![img1](readme/img1.png)
@@ -30,7 +28,6 @@ Figure 2
 
 The paper improves the performance of current state-of-the-art methods and develops a generalized approach that can be applied any other loss function that exist/will be developed.
 
-the original method.
 
 ## 2.2. My interpretation 
 
