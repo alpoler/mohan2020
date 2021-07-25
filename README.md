@@ -14,11 +14,35 @@ Summarize the paper, the method & its contributions in relation with the existin
 
 ## 2.1. The original method
 
-Explain the original method.
+Explain 
+
+The idea of metric learning is that samples of same class should be close to each other in the embedding space and samples of different classes should be away from each other. Thus, when a anchor, negative and positive are chosen existing loss methods moves toward the positive and the negative moves away from the anchor. However this may lead lead to undesired situations such as pushing the negative into the positives. This situation is shown in Figure 1. The problem results from the existing losses not taking into account that the negative might be placed in the positives or the positive might be placed in the negatives. 
+
+[pic1](readme/pic1.png)
+
+Figure 1
+
+This paper aims to correct the direction where samples are pushed by Direction Regularization (DR). Methods suggests rather than naively pushing the negative sample away from the anchor, following two constraints should be applied:negative sample should be pushed away from the middle of the anchor and the positive rather than being pushed away from the anchorthe anchor-positive line should be orthogonal to the line that connect the negative and the middle of anchor and the positive (Figure 2).
+
+[pic2](readme/pic2.png)
+
+Figure 2
+
+The paper improves the performance of current state-of-the-art methods and develops a generalized approach that can be applied any other loss function that exist/will be developed.
+
+the original method.
 
 ## 2.2. My interpretation 
 
-Explain the parts that were not clearly explained in the original paper and how you interpreted them.
+The method is best understood on triplet loss example, so the authors develop the idea on the triplet loss and then generalize to other loses. Thus, though the derivations and formulations are detailed for triplet loss, the same does not apply to other losses. 
+
+The method seems to be like developed for the triplet loss and then generalized for other losses. There are two reasons for this. The first is that DR is most suitable for triplet loss and the second is that paper mostly focuses on triplet loss. 
+
+As remarked in the previous section MS (Multi Similarity) loss part was not deeply explained. The most confusing part was what f_p was in Eqn. 15. f_a is the anchor indexed with “i”, f_n is the negative sample indexed with “n” but f_p was unclear. In the paragraph above “hardest positive” was mentioned. Later it was confirmed that it is the hardest positive with respect to associated anchor by contacting the authors.
+
+Another challenging part was that obtaining same results even though the code was complete since the hyper parameters were not declared. Later this issue was also solved by using a hyper parameter optimizer(optuna). Also how validation and test sets were separated was unclear.
+
+The idea makes sense and proven to improve performance. The general framework to regularize direction for losses very simple and concise. Although it increases the computational cost, it does not increase the computational complexity (in terms of big O notation). The paper touches on an important matter which has not been discovered before. The paper is not limited to improving performance, it also exploits the importance of direction regularization for losses. Thus, it opens new doors in metric learning field. 
 
 # 3. Experiments and results
 
@@ -103,7 +127,7 @@ TABLE 1: Recall Results on CUB-200 Dataset
 
 | Recall@K | 1 | 2 | 4 | 8 |
 |:----------:|---|---|---|---|
-| Triplet|  51.9 | 64.0 | 70.3  | 74.1 | 
+| Triplet|  51.9 | 64.0 | 70.3  | 74.1 |
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
 | DR-ProxyNCA | 52.43 | 63.74 | 74.05 | 83.37 |
@@ -113,17 +137,18 @@ TABLE 1: Recall Results on CUB-200 Dataset
 ![optuna](https://user-images.githubusercontent.com/50836811/126787205-e0bd09d0-ad2e-49f6-a31c-0daa61ba6d8f.png)
 
 <p align="center">
-Figure 1: Slice plot for hyper-parameter optimization of DR-Triplet.
+Figure 3: Slice plot for hyper-parameter optimization of DR-Triplet.
 </p>
+
 
 Although optimal result concludes from optuna are 0.3478912374083307 and 0.5061600574032541 for margin and regularization respectively, we can reproduce experiment with second best parameters. Unfortunately, we forget to add seed inside objective. However, results from arbitrary seed gives us idea and really performs as same as original results. As mentioned in ablation part of the MVR paper, our implementation also gives reasonable performance between 0.3 and 0.5 as shown in figure 1.
 
 ![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
 
-
 <p align="center">
-Figure 2: Qualitative results of Image retrieval.
+Figure 4: Qualitative results of Image retrieval.
 </p>
+
 
 In figure 2, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row. Model can distinguish between two similar bird species in terms of appearance as shown in second row, where it miss only one prediction at 4th retrieved result.
 # 4. Conclusion
