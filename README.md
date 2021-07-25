@@ -18,7 +18,7 @@ Explain
 
 The idea of metric learning is that samples of same class should be close to each other in the embedding space and samples of different classes should be away from each other. Thus, when a anchor, negative and positive are chosen existing loss methods moves toward the positive and the negative moves away from the anchor. However this may lead lead to undesired situations such as pushing the negative into the positives. This situation is shown in Figure 1. The problem results from the existing losses not taking into account that the negative might be placed in the positives or the positive might be placed in the negatives. 
 
-![pic1](readme/pic1.png)
+![img1](readme/img1.png)
 
 Figure 1
 
