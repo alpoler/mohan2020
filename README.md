@@ -24,7 +24,7 @@ Figure 1
 
 This paper aims to correct the direction where samples are pushed by Direction Regularization (DR). Methods suggests rather than naively pushing the negative sample away from the anchor, following two constraints should be applied:negative sample should be pushed away from the middle of the anchor and the positive rather than being pushed away from the anchorthe anchor-positive line should be orthogonal to the line that connect the negative and the middle of anchor and the positive (Figure 2).
 
-![pic2](readme/pic2.png)
+![img2](readme/img2.png)
 
 Figure 2
 
