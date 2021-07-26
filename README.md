@@ -37,7 +37,7 @@ The method seems to be like developed for the triplet loss and then generalized 
 
 As remarked in the previous section MS (Multi Similarity) loss part was not deeply explained. The most confusing part was what f_p was in Eqn. 15. f_a is the anchor indexed with “i”, f_n is the negative sample indexed with “n” but f_p was unclear. In the paragraph above “hardest positive” was mentioned. Later it was confirmed that it is the hardest positive with respect to associated anchor by contacting the authors.
 
-Another challenging part was that obtaining same results even though the code was complete since the hyper parameters were not declared. Later this issue was also solved by using a hyper parameter optimizer(optuna). Also how validation and test sets were separated was unclear.
+Another challenging part was  replicating the results since the hyper parameters were not declared. Later this issue was partly solved by using a hyper parameter optimizer(optuna). Also how validation and test sets were separated was unclear.
 
 The idea makes sense and proven to improve performance. The general framework to regularize direction for losses very simple and concise. Although it increases the computational cost, it does not increase the computational complexity (in terms of big O notation). The paper touches on an important matter which has not been discovered before. The paper is not limited to improving performance, it also exploits the importance of direction regularization for losses. Thus, it opens new doors in metric learning field. 
 
