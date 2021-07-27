@@ -45,7 +45,7 @@ The idea makes sense and proven to improve performance. The general framework to
 
 ## 3.1. Experimental setup
 
-As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set [[1]](#1). We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet. Regulariztion constant for dr-proxy are found as 0.056429125428603996.
+As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set [[1]](#1). We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet. Regulariztion constant for dr-proxy are found as 0.28667302210148093.
 
 ## 3.2. Running the code
 
@@ -99,7 +99,8 @@ python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --ma
 ```
 DR-PROXYNCA:
 ```
-python train.py --batch_size 196 --patience 25 --mvr_reg 0.45 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
+Please change seed to 8
+python train.py --batch_size 144 --patience 6 --mvr_reg 0.28667302210148093 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
@@ -127,7 +128,7 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 |
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
-| DR-ProxyNCA | 51.91 | 63.74 | 74.05 | 83.37 |
+| DR-ProxyNCA | 52.00 | 63.74 | 74.05 | 83.37 |
 
 
 
