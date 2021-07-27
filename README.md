@@ -101,7 +101,7 @@ python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --ma
 DR-PROXYNCA:
 ```
 Please change seed to 8 for reproducibility.
-python train.py --batch_size 144 --patience 6 --mvr_reg 0.28667302210148093 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
+python train.py --batch_size 144 --patience 6 --mvr_reg 0.28667302210148093 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --loss proxy --balanced_sampler_train false
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
