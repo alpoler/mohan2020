@@ -95,11 +95,12 @@ Main:\
 2.
 DR-TRIPLET:
 ```
+Please change seed to 1 for reproducibility.
 python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
 ```
 DR-PROXYNCA:
 ```
-Please change seed to 8
+Please change seed to 8 for reproducibility.
 python train.py --batch_size 144 --patience 6 --mvr_reg 0.28667302210148093 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy 
 ```
 For visualization
