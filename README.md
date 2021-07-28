@@ -45,7 +45,7 @@ The idea makes sense and proven to improve performance. The general framework to
 
 ## 3.1. Experimental setup
 
-As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set [[1]](#1). We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet. Regulariztion constant for dr-proxy are found as 0.28667302210148093.
+As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on ImageNet. Although they do not express which pretrained model they use, we choose caffe pretrained model due to superiority over pytorch pretrained model. The caffe model only perform zero mean preprocessing to the dataset compared to torch model that applies not only zero mean but also scaling of the dataset as a preprocessing. As mentioned in the paper, we augment train dataset with random cropping and random horizontal flip while test set is center cropped. We evaluate performance on CUB-200-2011 dataset but it is easily generalizable to other dataset. CUB dataset is split into two equal part as train and test set in the MVR paper ;however, they do not mention existence of validation set. Therefore, we assume that they do not use validation set. This fact is mentioned in Metric Learning Reality Check paper that majority of paper do not use validation set [[1]](#1). We choose embedding dimension size as 64 like the paper. MVR paper do not share margin and regularization parameters of triplet. Therefore, we have to optimize this hyperparameter with OPTUNA. As results of optimization, we find margin and regularization as 0.2781877469005122 and 0.4919607680052035 respectively. We also have no information about batch size. Since higher batches results with diverse pairs and triplets, we try to keep batch size respectively high. So we choose batch size as 128 for direction regularized triplet. Since one hyper-parameter exists for proxy loss, we apply grid search to regularization constant with increment of 0.05. After grid search, optimal regularization constant for proxy is founded as 0.30.
 
 ## 3.2. Running the code
 
@@ -96,12 +96,12 @@ Main:\
 DR-TRIPLET:
 ```
 Please change seed to 1 for reproducibility.
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss mvr_triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
 ```
 DR-PROXYNCA:
 ```
-Please change seed to 8 for reproducibility.
-python train.py --batch_size 144 --patience 6 --mvr_reg 0.28667302210148093 --loss mvr_proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --loss proxy --balanced_sampler_train false
+Please change seed to 8 for reproducibility and image per class to 12.
+python train.py --batch_size 144 --patience 10 --mvr_reg 0.30 --loss proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --loss proxy
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
@@ -129,7 +129,7 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 |
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
-| DR-ProxyNCA | 52.00 | 63.74 | 74.05 | 83.37 |
+| DR-ProxyNCA | 52.00 | 63.37 | 74.21 | 83.22 |
 
 
 
@@ -142,12 +142,21 @@ Figure 3: Slice plot for hyper-parameter optimization of DR-Triplet.
 
 Although optimal result concludes from optuna are 0.3478912374083307 and 0.5061600574032541 for margin and regularization respectively, we can reproduce experiment with second best parameters. Unfortunately, we forget to add seed inside objective. However, results from arbitrary seed gives us idea and really performs as same as original results. As mentioned in ablation part of the MVR paper, our implementation also gives reasonable performance between 0.3 and 0.5 as shown in figure 1.
 
+TABLE 2: Proxy Results for different regularization constants
+| Recall @K | 1 |
+|:---------:|:-:|
+| gamma=0.25 | 51.18 |
+| gamma=0.30 | 51.35 |
+| gamma=0.35 | 51.09 |
+| gamma=0.40 | 50.96 |
+| gamma=0.45 | 51.32 |
+
+
 ![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
 
 <p align="center">
 Figure 4: Qualitative results of Image retrieval.
 </p>
-
 
 In figure 2, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row. Model can distinguish between two similar bird species in terms of appearance as shown in second row, where it miss only one prediction at 4th retrieved result.
 # 4. Conclusion
