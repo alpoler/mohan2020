@@ -152,12 +152,7 @@ TABLE 2: Proxy Results for different regularization constants
 | gamma=0.40 | 50.96 |
 | gamma=0.45 | 51.32 |
 
-![mvr_prxy](https://user-images.githubusercontent.com/50836811/127361765-7eec83c4-3b78-4616-991e-8eff9835e6ca.png)
-<p align="center">
-Figure 4: Performance is drown for proxy loss with respect to regularization constant. Due to one lack of seed, result does not become as same as you produce. However, you get similar results if you reproduce it. Results in table 2 is verification of this.
-</p>
-
-We get best score in proxy loss while gamma is equal to 0.3 as mentioned in paper. Performance abruptly drops when we reduce gamma to 0.2 so we can say that direction regularization gives performance boost between 0.2 and 0.45. This parameter range for optimal performance is almostly as same range as in the paper. This observations are consistent with the paper.
+We get best score in proxy loss while gamma is equal to 0.3 as shown in Table 2. Performance abruptly drops when we reduce gamma to 0.2 so we can say that direction regularization gives performance boost when gamma take values between 0.2 and 0.45. This parameter range for optimal performance is almostly as same range as in the paper. This observations are consistent with the paper.
 
 ![kuslar3](https://user-images.githubusercontent.com/50836811/126769870-e177fe7f-10ea-46c3-9418-6796a23c101c.png)
 
