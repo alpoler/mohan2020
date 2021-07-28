@@ -8,7 +8,7 @@ This repository is the implementation of the CVPR 2020 paper written by Deen Day
 
 ## 1.1. Paper summary
 
-Summarize the paper, the method & its contributions in relation with the existing literature.
+The paper proposes to to add a Direction Regularizaiton(DR) to metric learning losses which are Proxy Loss, Triplet Loss and MS Loss. It is mentioned that DR is also applicable to other metric learning losses. In order to prove effectiveness of the proposed regularization, they test aforementioned losses it on CUB-200-2011, Cars-196, In-Shop Clothes Retrieval datasets both with the addition of regularization and without regularization. The results show that addition of DR improves the performance.
 
 # 2. The method and my interpretation
 
