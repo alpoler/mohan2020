@@ -171,7 +171,7 @@ Figure 6: Another qualitative results of Image retrieval.
 
 # 4. Conclusion
 
-Discuss the paper in relation to the results in the paper and your results.
+This paper unveils the importance of direction where samples are pushed rather than just exploiting the distance among the samples. Results we obtained with the addition of DR to existing losses seems to improve performance. However, we obtained the improved results through exhaustive fine-tuning. The comparison in metric learning field is not fair for many papers these days since there is no consensus on experimental setup. Kevin Musgrave et al. demonstrate this issue in [1] and show actual progresses are achieved with different methods in metric learning field. Using such a common experimental setup can help better analysis and comparison of new methods.
 
 # 5. References
 
