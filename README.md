@@ -157,6 +157,12 @@ Figure 5: Qualitative results of Image retrieval.
 </p>
 
 In figure 5, first column of each row shows unique query image. On the other hand, other columns in certain row corresponds to retrieved images corresponding to query image in that row. Model can distinguish between two similar bird species in terms of appearance as shown in second row, where it miss only one prediction at 4th retrieved result.
+
+![kuslar2](https://user-images.githubusercontent.com/50836811/127366847-dac9056c-10dc-4d32-b1e9-c7ae7f3b0630.png)
+<p align="center">
+Figure 6: Another qualitative results of Image retrieval.
+</p>
+
 # 4. Conclusion
 
 Discuss the paper in relation to the results in the paper and your results.
