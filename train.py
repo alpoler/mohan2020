@@ -146,7 +146,7 @@ if __name__ == '__main__':
     epoch_counter = 1
     total_iter_train = int(len(cub_train) / batch_size)
 
-    while epoch_counter < 81:
+    while patience < patience_level:
         avg_loss = 0
         net.train()
         for img, lbl in tqdm(tr_dataloader):
