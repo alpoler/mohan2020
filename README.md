@@ -18,13 +18,13 @@ The idea of metric learning is that samples of same class should be close to eac
 
 ![img1](readme/img1.png)
 
-Figure 1
+Figure 1 (Figure 1 of paper)
 
 This paper aims to correct the direction where samples are pushed by Direction Regularization (DR). Methods suggests rather than naively pushing the negative sample away from the anchor, following two constraints should be applied:negative sample should be pushed away from the middle of the anchor and the positive rather than being pushed away from the anchorthe anchor-positive line should be orthogonal to the line that connect the negative and the middle of anchor and the positive (Figure 2).
 
 ![img2](readme/img2.png)
 
-Figure 2
+Figure 2 (Figure 3 of paper)
 
 The paper improves the performance of current state-of-the-art methods and develops a generalized approach that can be applied any other loss function that exist/will be developed.
 
