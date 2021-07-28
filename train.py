@@ -30,8 +30,8 @@ if __name__ == '__main__':
                         )
     parser.add_argument("--tnsrbrd_dir", default="./runs", type=str)
     parser.add_argument("--model_save_dir", default="./MVR_MS/exp", type=str)
-    parser.add_argument("--batch_size", default=64, type=int)
-    parser.add_argument("--lr", default=1e-5, type=float)
+    parser.add_argument("--batch_size", default=80, type=int)
+    parser.add_argument("--lr", default=3e-5, type=float)
     parser.add_argument("--wdecay", default=5e-3, type=float)
     parser.add_argument("--mvr_reg", default=0.3, type=float)
     parser.add_argument("--bn_freeze", default=False, type=bool)
@@ -41,11 +41,14 @@ if __name__ == '__main__':
     parser.add_argument("--balanced_sampler_train", default=True, type=bool)
     parser.add_argument("--balanced_sampler_validation", default=False, type=bool)
     parser.add_argument("--loss", default="ms_reg",type=str)
-    parser.add_argument("--margin", default=0.28)
+    parser.add_argument("--margin", default=0.28, type=float)
+    parser.add_argument("--images_per_class", default=5, type=int)
+    parser.add_argument("--ms_thresh", default=0.6, type=float)
+    parser.add_argument("--seed", default=1, type=int)
     args = parser.parse_args()
 
     # seeds
-    seed = 1
+    seed = args.seed
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -94,7 +97,7 @@ if __name__ == '__main__':
     batch_size = args.batch_size
     # SAMPLER IMPLEMENTATION
     if args.balanced_sampler_train:
-        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=16)
+        tr_balanced_sampler = sampler.BalancedSampler(cub_train, batch_size=batch_size, images_per_class=args.images_per_class)
         tr_batch_sampler = BatchSampler(tr_balanced_sampler, batch_size=batch_size, drop_last=True)
         tr_dataloader = torch.utils.data.DataLoader(
             cub_train,
@@ -125,12 +128,16 @@ if __name__ == '__main__':
     elif args.loss == "proxy":
         loss_func = MVR_Proxy(reg=args.mvr_reg, no_class=no_tr_class, embedding_dimension=emb_dim)
     elif args.loss == "ms":
-        loss_func = MVR_MS(2.0, 40.0, 0.5, 0.1)
+        loss_func = MVR_MS(2.0, 50.0,  0.33121341100189616, 0.1)
     elif args.loss == "ms_reg":
-        loss_func = MVR_MS_reg(2.0, 40.0, 0.5, 0.1, 0.3)
+        loss_func = MVR_MS_reg(2.0, 50.0, 0.6, 0.1, args.margin) # 0.5872421417546484)
     loss_func.to(cuda)
     # Optimizer
-    optimizer = torch.optim.Adam([{"params": net.parameters()},
+    if args.wdecay <= 0.0:
+        optimizer = torch.optim.Adam([{"params": net.parameters()},
+                                      {"params": loss_func.parameters()}], lr=args.lr)
+    else:
+        optimizer = torch.optim.Adam([{"params": net.parameters(), "weight_decay": args.wdecay},
                                    {"params": loss_func.parameters()}], lr=args.lr)
     # Initial
     best_recall = 0
@@ -139,7 +146,7 @@ if __name__ == '__main__':
     epoch_counter = 1
     total_iter_train = int(len(cub_train) / batch_size)
 
-    while patience < patience_level:
+    while epoch_counter < 81:
         avg_loss = 0
         net.train()
         for img, lbl in tqdm(tr_dataloader):
