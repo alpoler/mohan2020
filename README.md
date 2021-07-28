@@ -145,6 +145,7 @@ Although optimal result concludes from optuna are 0.3478912374083307 and 0.50616
 TABLE 2: Proxy Results for different regularization constants
 | Recall @K | 1 |
 |:---------:|:-:|
+| gamma=0.20 | 49.71 |
 | gamma=0.25 | 51.18 |
 | gamma=0.30 | 51.35 |
 | gamma=0.35 | 51.09 |
