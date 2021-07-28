@@ -129,7 +129,7 @@ TABLE 1: Recall Results on CUB-200 Dataset
 | Triplet|  51.9 | 64.0 | 70.3  | 74.1 |
 | DR-Triplet| 54.49 | 66.22 | 77.5 | 85.79 |
 | ProxyNCA | 49.2 |61.9 | 67.90 | 72.4 |
-| DR-ProxyNCA | 52.00 | 63.37 | 74.21 | 83.22 |
+| DR-ProxyNCA | 51.35 | 63.37 | 74.21 | 83.22 |
 
 
 
