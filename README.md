@@ -99,13 +99,16 @@ Main:\
 2.
 DR-TRIPLET:
 ```
-Please change seed to 1 for reproducibility.
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet --wdecay 0.0 --images_per_class 16
 ```
 DR-PROXYNCA:
 ```
-Please change seed to 8 for reproducibility and image per class to 12.
-python train.py --batch_size 144 --patience 10 --mvr_reg 0.30 --loss proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --loss proxy
+python train.py --batch_size 144 --patience 10 --mvr_reg 0.30 --loss proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --wdecay 0.0
+--seed 8 --images_per_class 12
+```
+DR-MS:
+```
+python train.py --tnsrbrd_dir ./runs/exp_ms --model_save_dir ./MVR_MS/exp --exp_name mvr_ms
 ```
 For visualization
 Create folder with name you desired inside log directory. Please change name of 'proxy_exp20' with name you assing for log folder. 
@@ -117,6 +120,10 @@ python test.py --exp_name mvr_triplet --model_save_dir ./MVR_Triplet/exp
 DR-PROXYNCA:
 ```
 python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
+```
+DR-MS:
+```
+python test.py --exp_name mvr_ms --model_save_dir ./MVR_MS/exp
 ```
 
 ## 3.3. Results
