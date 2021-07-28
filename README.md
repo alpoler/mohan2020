@@ -49,8 +49,6 @@ As model, MVR paper utilizes pretrained GoogleNet with Batch Normalization on Im
 
 ## 3.2. Running the code
 
-Explain your code & directory structure and how other people can run it. 
-
 ```
 .
 ├── dataloader
@@ -116,8 +114,6 @@ python test.py --exp_name mvr_proxy --model_save_dir ./MVR_Proxy/exp
 ```
 
 ## 3.3. Results
-
-Present your results and compare them to the original paper. Please number your figures & tables as if this is a paper.
 
 Retrieval performance of the DR is evaluated with Recall @K. Recall @K computes percentage of images whose k neighborhood contains at least one sample as same class as query image. It is worth to express that recall metric in image retrieval is different from those in recommendation application.
 
