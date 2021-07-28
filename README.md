@@ -16,15 +16,21 @@ The paper proposes to to add a Direction Regularizaiton(DR) to metric learning l
 
 The idea of metric learning is that samples of same class should be close to each other in the embedding space and samples of different classes should be away from each other. Thus, when a anchor, negative and positive are chosen existing loss methods moves toward the positive and the negative moves away from the anchor. However this may lead lead to undesired situations such as pushing the negative into the positives. This situation is shown in Figure 1. The problem results from the existing losses not taking into account that the negative might be placed in the positives or the positive might be placed in the negatives. 
 
-![img1](readme/img1.png)
-
-Figure 1 (Figure 1 of paper)
-
+<p align="center">
+  <img src="readme/img1.png">
+</p>
+<p align="center">
+  Figure 1 (Figure 1 of paper)
+</p>
 This paper aims to correct the direction where samples are pushed by Direction Regularization (DR). Methods suggests rather than naively pushing the negative sample away from the anchor, following two constraints should be applied:negative sample should be pushed away from the middle of the anchor and the positive rather than being pushed away from the anchorthe anchor-positive line should be orthogonal to the line that connect the negative and the middle of anchor and the positive (Figure 2).
 
-![img2](readme/img2.png)
+<p align="center">
+  <img src="readme/img2.png">
+</p>
+<p align="center">
+  Figure 2 (Figure 3 of paper)
+</p>
 
-Figure 2 (Figure 3 of paper)
 
 The paper improves the performance of current state-of-the-art methods and develops a generalized approach that can be applied any other loss function that exist/will be developed.
 
