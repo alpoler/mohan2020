@@ -99,12 +99,12 @@ Main:\
 2.
 DR-TRIPLET:
 ```
-python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet --wdecay 0.0 --images_per_class 16
+python train.py --batch_size 128 --patience 25 --mvr_reg 0.4919607680052035 --margin 0.2781877469005122 --loss triplet --tnsrbrd_dir ./runs/exp_trp --model_save_dir ./MVR_Triplet/exp  --exp_name mvr_triplet --wdecay 0.0 --images_per_class 16 --lr 1e-5
 ```
 DR-PROXYNCA:
 ```
 python train.py --batch_size 144 --patience 10 --mvr_reg 0.30 --loss proxy --tnsrbrd_dir ./runs/exp_proxy --model_save_dir ./MVR_Proxy/exp --exp_name mvr_proxy --wdecay 0.0
---seed 8 --images_per_class 12
+--seed 8 --images_per_class 12 --lr 1e-5
 ```
 DR-MS:
 ```
